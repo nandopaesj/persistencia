@@ -15,13 +15,87 @@
     </form>
 
     <div id="resultado">
-      
         <h2>Resultados:</h2>
-        <ul id="lista-clientes"></ul>
+        <ul id="lista-clientes"> </ul>
     </div>
-    
+
+    <div id="editar-cliente">
+        <h1>Editar Cliente</h1>
+        <form id="form-editar" action="/editarCliente" method="post">
+            <input type="hidden" id="edit-id" name="id">
+            <label for="edit-nome">Nome:</label><br>
+            <input type="text" id="edit-nome" name="nome" required><br><br>
+            <label for="edit-email">Email:</label><br>
+            <input type="email" id="edit-email" name="email" required><br><br>
+            <label for="edit-telefone">Telefone:</label><br>
+            <input type="text" id="edit-telefone" name="telefone" required><br><br>
+            <label for="edit-endereco">Endereço:</label><br>
+            <input type="text" id="edit-endereco" name="endereco" required><br><br>
+            <input type="submit" value="Salvar Alterações">
+        </form>
+
+        <form action="/deletarCliente" method="post" id="form-deletar">
+            <input type="hidden" id="delete-id" name="id">
+            <div class="botoes">
+                <button type="submit" id="btn-deletar">Deletar</button>
+            </div>
+        </form>
+    </div>
     <script>
-        
+        const consultaRealizada = localStorage.getItem('consultaRealizada') === 'true';   // TRUE FALTOU A ASPAS
+        const clientes = JSON.parse(localStorage.getItem('clientes') || '[]');
+
+        localStorage.removeItem('consultaRealizada');
+        localStorage.removeItem('clientes'); // Limpar o localStorage após usar
+
+    if(consultaRealizada){
+       if (clientes.length > 0) {
+            const lista = document.getElementById('lista-clientes');
+            clientes.forEach(cliente => {
+                const li = document.createElement('li');
+                li.textContent = 
+            'ID: ' + cliente.id + 
+            ', Nome: ' + cliente.nome + 
+            ', Email: ' + cliente.email + 
+            ', Telefone: ' + cliente.telefone + 
+            ', Endereço: ' + cliente.endereco;
+
+            const botaoEditar = document.createElement('button');
+            botaoEditar.textContent = 'Editar';
+            botaoEditar.addEventListener('click', ()=>{
+                document.getElementById('edit-id').value = cliente.id;
+                document.getElementById('edit-nome').value = cliente.nome;
+                document.getElementById('edit-email').value = cliente.email;
+                document.getElementById('edit-telefone').value = cliente.telefone;
+                document.getElementById('edit-endereco').value = cliente.endereco;
+             });
+                li.appendChild(botaoEditar);
+                lista.appendChild(li);
+            });        
+        }else{
+            alert('Cliente não encontrado');
+        }
+    }
+    const urlParams = new URLSearchParams(window.location.search);
+        const mensagem = urlParams.get('mensagem');
+        if(mensagem === 'editado'){
+            alert('Cliente editado com sucesso!');
+        }
+        document.getElementById('btn-deletar').addEventListener('click', (event)=>{
+            const id = document.getElementById('edit-id').value;
+            if(!id){
+                alert('Selecione um cliente para deletar');
+                event.preventDefault();
+                return;
+            }
+            if(!confirm('Deseja mesmo deletar o usuário selecionado?')){
+                event.preventDefault();
+            }else if(confirm('Deseja prosseguir?')){
+                document.getElementById('delete-id').value = id;
+            }
+        });
+
     </script>
+
 </body>
 </html>

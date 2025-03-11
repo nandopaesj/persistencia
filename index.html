@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inserir Cliente</title>
-    <link rel="stylesheet" href="/CSS/style.css">
+    <link rel="stylesheet" href="/css/style.css">
+
 </head>
 <body>
     <h1>Inserir Cliente</h1>
@@ -19,6 +20,7 @@
         <input type="text" id="endereco" name="endereco"><br><br>
         <input type="submit" value="Inserir Cliente">
     </form>
+    <a href="http://localhost:3000/consultarCliente.html">consulta</a>
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const mensagem = urlParams.get('mensagem');
@@ -26,5 +28,6 @@
             alert('Cliente inserido com sucesso!');
         }
     </script>
+    
 </body>
 </html>
